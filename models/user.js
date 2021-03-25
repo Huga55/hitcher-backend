@@ -7,6 +7,7 @@ const userScheme = new Schema({
 	email: String,
 	password: String,
 	token: String,
+	sendNotifications: {type: Boolean, default: false},
 });
 
 module.exports = mongoose.model("User", userScheme);

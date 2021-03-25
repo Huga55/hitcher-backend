@@ -33,23 +33,23 @@ exports.register = function(request, response) {
 	//check user with this login
 	User.findOne({login}, function(err, result) {
 		if(result) {
-			return response.send({success: false, error: "User with this login exists already"});
+		 	return response.status(400).send({success: false, error: "User with this login exists already"});
 		}
-	});
-	//check user with this email
-	User.findOne({email}, function(err, result) {
-		if(result) {
-			return response.send({success: false, error: "User with this email exists already"});
-		}
-	});
-	//save new user
-	const user = new User({login, email, password: hashPassword});
-	user.save(function(error) {
-		if(error) {
-			console.log(error);
-			return response.status(400).send({success: false, error});
-		} 
-		return response.send({success: true});
+		//check user with this email
+		User.findOne({email}, function(err, result) {
+			if(result) {
+				return response.status(400).send({success: false, error: "User with this email exists already"});
+			}
+			//save new user
+			const user = new User({login, email, password: hashPassword});
+			user.save(function(error) {
+				if(error) {
+					console.log(error);
+					return response.status(400).send({success: false, error});
+				} 
+				return response.send({success: true});
+			});
+		});
 	});
 }
 
@@ -57,8 +57,9 @@ exports.check = function(request, response) {
 	if(!request.headers["authorization"]) return response.send({success: false});
 
 	const token = request.headers["authorization"];
+	const hashToken = crypto.createHash("md5").update(token).digest("hex");
 
-	User.findOne({token}, function(err, result) {
+	User.findOne({token: hashToken}, function(err, result) {
 		if(err || !result) {
 			return response.status(400).send({success: false});
 		}
