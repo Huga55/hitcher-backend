@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const userRouter = require("./routes/userRouter.js");
 const ticketRouter = require("./routes/ticketRouter.js");
-const authMiddleware = require("./middleware/authMiddleware.js");
+const authMiddleware = require("./middlewares/authMiddleware.js");
 
 //for cors requests
 app.use(cors());
@@ -16,7 +16,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use("/user", userRouter);
-app.use(user)
+app.use(authMiddleware);
 app.use("/ticket", ticketRouter);
 
 

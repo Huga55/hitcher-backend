@@ -6,8 +6,11 @@ const ticketScheme = new Schema({
 	authorId: String,
 	addressFrom: String,
 	addressTo: String,
-	timeFrom: Number,
-	timeTo: Number,
+	timeFrom: Date,
+	timeTo: Date,
 	description: String,
 	type: String,
+	dateCreate: Date,
 });
+
+module.exports = mongoose.model("Ticket", ticketScheme); 
