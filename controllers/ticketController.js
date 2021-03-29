@@ -19,7 +19,7 @@ exports.create = function(request, response) {
 
 	const { _id } = request.dataUser;
 
-	const { addressFrom, addressTo, timeFrom, timeTo, description, type, dateCreate } = request.body;
+	const { addressFrom, addressTo, timeFrom, timeTo, description, type, dateCreateUpdate } = request.body;
 
 	const ticket = new Ticket({...request.body, authorId: _id});
 	ticket.save(function(error) {
@@ -37,7 +37,7 @@ exports.getOne = function(request, response) {
 
 	const id = request.params.id;
 
-	findOne({_id: id}, function(error, result) {
+	Ticket.findOne({_id: id}, function(error, result) {
 		if(error) return response.status(400).send({success: false, error});
 
 		if(result) {
@@ -53,7 +53,7 @@ exports.update = function(request,response) {
 	const { _id } = request.dataUser;
 	const { id, ...otherData } = request.body;
 
-	Ticket.findOneAndUpdate({authorId: _id, _id : request.body.id}, {...otherData}, {new: true}, 
+	Ticket.findOneAndUpdate({authorId: _id, _id : id}, {...otherData}, {new: true},
 		function(error, result) {
 			if(error) return response.status(400).send({success: false, error});
 			if(result) {
@@ -61,4 +61,18 @@ exports.update = function(request,response) {
 			}
 			return response.status(400).send({success: false, error: "Error. Ticket not found"});
 	});
+}
+
+exports.delete = function(request, response) {
+	if(!request.params) return response.status(400).send({success: false, error: "Error. Data not found"});
+
+	const { _id } = request.dataUser;
+	const { id } = request.params;
+
+	Ticket.findOneAndDelete({authorId: _id, _id : id}, {}, function(error) {
+		if(!error) {
+			return response.send({success: true});
+		}
+		return response.status(400).send({success: false, error: "Ticket did not delete!"});
+	})
 }

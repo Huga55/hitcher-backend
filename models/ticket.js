@@ -10,7 +10,7 @@ const ticketScheme = new Schema({
 	timeTo: Date,
 	description: String,
 	type: String,
-	dateCreate: Date,
+	dateCreateUpdate: Date,
 });
 
 module.exports = mongoose.model("Ticket", ticketScheme); 

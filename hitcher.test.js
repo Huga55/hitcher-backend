@@ -64,7 +64,7 @@ describe("POST /user/auth", function(done) {
 			.set("Content-Type", "application/json")
 			.send(authData)
 			.end(function(error, response) {
-				console.log(response.body);
+				// console.log(response.body);
 				expect(response.status).to.equal(200);
 				expect(response.body.success).deep.equal(true);
 				done();
@@ -73,14 +73,14 @@ describe("POST /user/auth", function(done) {
 })
 
 //get all tickets
-describe("GET /ticket/getAll", function(done) {
+describe("GET /ticket/all", function(done) {
 	it("ALL TICKETS", function(done) {
-		api.get("/ticket/getAll")
+		api.get("/ticket/all")
 			.set("Content-Type", "application/json")
 			.set("authorization", "asd")
 			.end(function(error, response) {
-				console.log("response", response.body);
-				console.log("error", error);
+				// console.log("response", response.body);
+				// console.log("error", error);
 				expect(response.status).to.equal(200);
 				expect(response.body.success).deep.equal(true);
 				done();
@@ -95,21 +95,83 @@ const ticket = {
 	timeTo: 24,
 	description: "description",
 	type: "Водитель",
-	dateCreate: "1242353424",
+	dateCreateUpdate: "1242353424",
 }
 
 //create new ticket
-describe("POST /ticket/create", function(done) {
+describe("POST /ticket/", function(done) {
 	it("CREATE NEW TICKET success:true", function(done) {
-		api.post("/ticket/create")
+		api.post("/ticket/")
 			.set("Content-Type", "application/json")
 			.set("authorization", "asd")
 			.send(ticket)
 			.end(function(error, response) {
-				console.log("response", response.body);
-				console.log("error", error);
+				// console.log("response", response.body);
+				// console.log("error", error);
 				expect(response.status).to.equal(200);
 				expect(response.body).deep.equal({success: true});
+				done();
+			})
+	})
+})
+
+//to get one ticket
+const id = "605d7277a90825172c898b6c";
+describe(`GET /ticket/${id}`, function(done) {
+	it("GET ONE TICKET", function(done) {
+		api.get(`/ticket/${id}`)
+			.set("Content-Type", "application/json")
+			.set("authorization", "asd")
+			.end(function(error, response) {
+				//console.log("response", response.body);
+				//console.log("error", error);
+				expect(response.status).to.equal(200);
+				expect(response.body.success).to.equal(true);
+				done();
+			})
+	})
+})
+
+
+//update ticket
+const ticketUpdate = {
+	addressForm: "New Address From",
+	addressTo: "New Address To",
+	timeFrom: 8,
+	timeTo: 10,
+	description: "new description",
+	type: "пассажир",
+	id: "605d7277a90825172c898b6c",
+	dateCreateUpdate: 1238612738,
+}
+describe("PUT /ticket/", function(done) {
+	it("PUT ticket", function(done) {
+		api.put("/ticket/")
+			.set("Content-Type", "application/json")
+			.set("authorization", "asd")
+			.send({...ticketUpdate})
+			.end(function(error, response) {
+				// console.log("response", response);
+				// console.log("error", error);
+				expect(response.status).to.equal(200);
+				expect(response.body.success).to.equal(true);
+				done();
+			})
+	})
+})
+
+//delete ticket
+const idDelete = "605d72acc593f02d4813b002";
+describe("Delete /ticket/:id", function(done) {
+	it("DELETE ticket", function(done) {
+		api.delete(`/ticket/${idDelete}`)
+			.set("Content-Type", "application/json")
+			.set("authorization", "asd")
+			.end(function(error, response) {
+				// console.log("response", response);
+				// console.log("error", error);
+				expect(response.status).to.equal(200);
+				expect(response.body.success).to.equal(true);
 				done();
 			})
 	})
