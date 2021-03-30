@@ -7,10 +7,10 @@ const chatScheme = new Schema({
     creatorId: String,
     answererId: String,
     dateCreate: Date,
-    report: {
+    report: [{
         userId: String,
         message: String,
-    }
+    }]
 });
 
 module.exports = mongoose.model("Chat", chatScheme);

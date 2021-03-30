@@ -176,3 +176,19 @@ describe("Delete /ticket/:id", function(done) {
 			})
 	})
 })
+
+//get all chats
+describe("GET all /chat/getAll", function(done) {
+	it("GET ALL chats", function(done) {
+		api.get("/chat/getAll")
+			.set("Content-Type", "application/json")
+			.set("authorization", "asd")
+			.end(function(error, response) {
+				console.log("response", response.body);
+				console.log("error", error);
+				expect(response.status).to.equal(200);
+				expect(response.body.status).to.equal(true);
+				done();
+			})
+	})
+})

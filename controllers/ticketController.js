@@ -14,14 +14,14 @@ exports.getAll = function(request,response) {
 
 exports.create = function(request, response) {
 	if(!request.body) return response.status(400).send({success: false, error: "Error. Data not found"});
-	//token to get id of author
+	//token to get id of creatorId
 	const token = request.headers.authorization;
 
 	const { _id } = request.dataUser;
 
 	const { addressFrom, addressTo, timeFrom, timeTo, description, type, dateCreateUpdate } = request.body;
 
-	const ticket = new Ticket({...request.body, authorId: _id});
+	const ticket = new Ticket({...request.body, creatorId: _id});
 	ticket.save(function(error) {
 		if(error) {
 			return response.status(400).send({success: false, error});
@@ -53,7 +53,7 @@ exports.update = function(request,response) {
 	const { _id } = request.dataUser;
 	const { id, ...otherData } = request.body;
 
-	Ticket.findOneAndUpdate({authorId: _id, _id : id}, {...otherData}, {new: true},
+	Ticket.findOneAndUpdate({creatorId: _id, _id : id}, {...otherData}, {new: true},
 		function(error, result) {
 			if(error) return response.status(400).send({success: false, error});
 			if(result) {
@@ -69,7 +69,7 @@ exports.delete = function(request, response) {
 	const { _id } = request.dataUser;
 	const { id } = request.params;
 
-	Ticket.findOneAndDelete({authorId: _id, _id : id}, {}, function(error) {
+	Ticket.findOneAndDelete({creatorId: _id, _id : id}, {}, function(error) {
 		if(!error) {
 			return response.send({success: true});
 		}
