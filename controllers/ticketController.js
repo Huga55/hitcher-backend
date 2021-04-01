@@ -1,5 +1,4 @@
 const Ticket = require("../models/ticket.js");
-const User = require("../models/user.js");
 
 exports.getAll = function(request,response) {
 	Ticket.find({}, function(error, result) {
@@ -13,7 +12,7 @@ exports.getAll = function(request,response) {
 }
 
 exports.create = function(request, response) {
-	if(!request.body) return response.status(400).send({success: false, error: "Error. Data not found"});
+	if(!request.body || Object.keys(request.body).length == 0) return response.status(400).send({success: false, error: "Error. Data not found"});
 	//token to get id of creatorId
 	const token = request.headers.authorization;
 
@@ -29,11 +28,10 @@ exports.create = function(request, response) {
 		return response.send({success: true});
 	});
 	//need to send on socket new for all!
-	
 }
 
 exports.getOne = function(request, response) {
-	if(!request.params.id) return response.status(400).send({success: false, error: "Error. Id not found"});
+	if(!request.params.id || Object.keys(request.params).length == 0) return response.status(400).send({success: false, error: "Error. Id not found"});
 
 	const id = request.params.id;
 
@@ -48,7 +46,7 @@ exports.getOne = function(request, response) {
 }
 
 exports.update = function(request,response) {
-	if(!request.body) return response.status(400).send({success: false, error: "Error. Data not found"});
+	if(!request.body || Object.keys(request.body).length == 0) return response.status(400).send({success: false, error: "Error. Data not found"});
 
 	const { _id } = request.dataUser;
 	const { id, ...otherData } = request.body;
@@ -64,7 +62,7 @@ exports.update = function(request,response) {
 }
 
 exports.delete = function(request, response) {
-	if(!request.params) return response.status(400).send({success: false, error: "Error. Data not found"});
+	if(!request.params || Object.keys(request.params).length == 0) return response.status(400).send({success: false, error: "Error. Data not found"});
 
 	const { _id } = request.dataUser;
 	const { id } = request.params;

@@ -151,7 +151,7 @@ describe("PUT /ticket/", function(done) {
 			.set("authorization", "asd")
 			.send({...ticketUpdate})
 			.end(function(error, response) {
-				// console.log("response", response);
+				// console.log("response", response.body);
 				// console.log("error", error);
 				expect(response.status).to.equal(200);
 				expect(response.body.success).to.equal(true);
@@ -184,10 +184,51 @@ describe("GET all /chat/getAll", function(done) {
 			.set("Content-Type", "application/json")
 			.set("authorization", "asd")
 			.end(function(error, response) {
-				console.log("response", response.body);
-				console.log("error", error);
+				// console.log("response", response.body);
+				// console.log("error", error);
 				expect(response.status).to.equal(200);
-				expect(response.body.status).to.equal(true);
+				expect(response.body.success).to.equal(true);
+				done();
+			})
+	})
+})
+
+const oneChat = "6062bb1cb27059ca5e88e8db";
+
+//get one chat
+describe("GET ONE /chat/:id", function(done) {
+	it("GET one chat", function(done) {
+		api.get("/chat/" + oneChat)
+			.set("Content-Type", "application/json")
+			.set("authorization", "asd")
+			.end(function(error,response) {
+				// console.log("response", response.body);
+				// console.log("error", error);
+				expect(response.status).to.equal(200);
+				expect(response.body.success).to.equal(true);
+				done();
+			})
+	})
+})
+
+const messageData = {
+	chatId: "6062bb1cb27059ca5e88e8db",
+	userIdTo: "123",
+	message: "Hi another time!"
+}
+
+//send message
+describe("send message", function(done) {
+	it("POST message", function(done) {
+		api.post("/chat/send")
+			.set("Content-Type", "application/json")
+			.set("authorization", "asd")
+			.send({...messageData})
+			.end(function(error, response) {
+				// console.log("response", response.body);
+				// console.log("error", error);
+				expect(response.status).to.equal(200);
+				expect(response.body.success).to.equal(true);
 				done();
 			})
 	})

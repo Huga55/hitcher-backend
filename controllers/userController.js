@@ -3,7 +3,7 @@ const crypto = require("crypto");
 const randomstring = require("randomstring");
 
 exports.auth = function(request, response) {
-	if(!request.body) return response.status(400).send("Error! Body not found");
+	if(!request.body || Object.keys(request.body).length == 0) return response.status(400).send("Error! Body not found");
 
 	const { email, password } = request.body;
 	const hashPassword = crypto.createHash("md5").update(password).digest("hex");
@@ -26,7 +26,7 @@ exports.auth = function(request, response) {
 }
 
 exports.register = function(request, response) {
-	if(!request.body) return response.status(400).send("Error! Body not found");
+	if(!request.body || Object.keys(request.body).length == 0) return response.status(400).send("Error! Body not found");
 
 	const { login, email, password } = request.body;
 	const hashPassword = crypto.createHash("md5").update(password).digest("hex");
